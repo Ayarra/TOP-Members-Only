@@ -32,7 +32,7 @@ app.use(passport.session());
 //  Routes Setup
 const authRoutes = require("./auth/authRoutes");
 const messagesRoutes = require("./messages/messagesRoutes");
-const isAuth = require("./auth/authMiddelware").isAuth;
+const isAuth = require("./auth/authMiddleware").isAuth;
 
 app.use("/auth", authRoutes);
 app.use("/messages", messagesRoutes);
