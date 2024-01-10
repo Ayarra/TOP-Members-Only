@@ -1,0 +1,51 @@
+const express = require("express");
+const cors = require("cors");
+const session = require("express-session");
+const passport = require("passport");
+const flash = require("connect-flash");
+const dbConnect = require("./config/database");
+require("./config/passport");
+
+// Creating express app
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    exposedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// Connection to the DB
+dbConnect();
+
+// Passport Setup
+app.use(
+  session({ secret: "membersOnly", resave: false, saveUninitialized: true })
+);
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
+//  Routes Setup
+const authRoutes = require("./auth/authRoutes");
+const messagesRoutes = require("./messages/messagesRoutes");
+const isAuth = require("./auth/authMiddelware").isAuth;
+
+app.use("/auth", authRoutes);
+app.use("/messages", messagesRoutes);
+
+app.use("/error", (req, res) => {
+  res.send("Error page");
+});
+app.use("/", isAuth, (req, res) => {
+  console.log("im in the route");
+  res.send("Hello World!");
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`);
+});
