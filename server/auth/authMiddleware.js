@@ -1,4 +1,5 @@
 module.exports.isAuth = (req, res, next) => {
+  console.log("user in Auth middleware: " + req.user);
   if (req.isAuthenticated()) next();
   else
     res

@@ -27,10 +27,11 @@ const LoginForm = ({ setOpen }) => {
         });
         setAuth({
           isAuthenticated: true,
-          user: { username: formData.username },
+          user: response.data,
         });
         setOpen(0);
       } catch (err) {
+        console.log(err);
         setFormError(err.response.data.message);
         console.log(err.response.data.message);
       }

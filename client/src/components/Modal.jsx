@@ -2,7 +2,7 @@ import { Children, cloneElement } from "react";
 const Modal = ({ open, setOpen, children }) => {
   return (
     <div
-      className={`fixed inset-0 flex justify-center items-center  ${
+      className={`fixed inset-0 flex justify-center items-center z-10 ${
         open ? "bg-gray-700/20" : "hidden"
       }`}
       onClick={() => setOpen(0)}

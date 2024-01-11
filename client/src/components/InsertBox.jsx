@@ -1,26 +1,31 @@
-import axios from "axios";
 import { useContext, useState } from "react";
+import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
+
+const POSTS_POST_URL = "/messages/post";
 
 const InsertBox = () => {
   const [expanded, setExpanded] = useState(false);
   const [textareaContent, setTextareaContent] = useState("");
   const { auth } = useContext(AuthContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:3000/messages/post", {
-        content: textareaContent,
-        owner: "321",
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log("error" + err);
-      });
-
+    try {
+      await axios.post(
+        POSTS_POST_URL,
+        {
+          content: textareaContent,
+          owner: auth.user.userId,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(auth.user.userID);
+    } catch (err) {
+      console.log("error" + err);
+    }
     setTextareaContent("");
   };
 

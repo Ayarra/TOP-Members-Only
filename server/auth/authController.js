@@ -19,7 +19,7 @@ exports.register = asyncHandler(async (req, res, next) => {
           password: hashedPassword,
         });
         await user.save();
-        res.redirect("/");
+        res.send("User successfuly registred!");
       }
     });
   }
@@ -34,14 +34,15 @@ exports.login = (req, res, next) => {
       return res.status(401).send(info);
     }
     req.login(user, (errLogin) => {
+      console.log(user);
       if (errLogin) return res.status(500).send("Internal Server Error");
-      else res.redirect("/");
+      // else res.send("User successfuly logged in!");
+      else res.send({ userID: req.user.id, username: req.user.username });
     });
   })(req, res, next);
 };
 
 exports.logout = (req, res, next) => {
-  console.log("logged out");
   req.logout((err) => {
     if (err) {
       return next(err);

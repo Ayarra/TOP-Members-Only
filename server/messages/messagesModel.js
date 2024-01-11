@@ -3,11 +3,10 @@ const Schema = mongoose.Schema;
 
 const MessagesSchema = new Schema({
   content: String,
-  // owner: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "User",
-  // },
-  owner: String,
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   createdAt: { type: Date, default: Date.now },
 });
 
