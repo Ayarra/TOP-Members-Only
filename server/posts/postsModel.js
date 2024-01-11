@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const MessagesSchema = new Schema({
+const PostsSchema = new Schema({
   content: String,
   owner: {
     type: mongoose.Schema.Types.ObjectId,
@@ -10,4 +10,4 @@ const MessagesSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("Message", MessagesSchema);
+module.exports = mongoose.model("Post", PostsSchema);

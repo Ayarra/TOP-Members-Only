@@ -1,12 +1,13 @@
-import Content from "./components/Content";
-import Navbar from "./components/Navbar";
+import { Outlet } from "react-router-dom";
 import WriteBox from "./components/InsertBox";
+import Navbar from "./components/Navbar/Navbar";
 
 function App() {
   return (
     <>
       <Navbar></Navbar>
-      <Content></Content>
+      <Outlet></Outlet>
+
       <WriteBox></WriteBox>
     </>
   );

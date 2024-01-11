@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "../api/axios";
 import Message from "./Message";
 
-const GET_POSTS_URL = "/messages";
+const GET_POSTS_URL = "/posts";
 
 const Content = () => {
   const [posts, setPosts] = useState([]);

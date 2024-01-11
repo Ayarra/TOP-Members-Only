@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
-import AuthContext from "../context/AuthProvider";
-import LoginForm from "./LoginForm";
-import Modal from "./Modal";
+import { Link } from "react-router-dom";
+import AuthContext from "../../context/AuthProvider";
+import LoginForm from "../Auth/LoginForm";
+import RegisterForm from "../Auth/RegisterForm";
+import Modal from "../Modal";
 import NavbarAuth from "./NavbarAuth";
 import NavbarNoAuth from "./NavbarNoAuth";
-import RegisterForm from "./RegisterForm";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -12,10 +13,10 @@ const Navbar = () => {
 
   return (
     <div className="bg-purple-400 flex justify-between p-6">
-      <div className="text-4xl">
+      <Link to="/" className="text-4xl">
         <span className="text-slate-200">C</span>lub
         <span className="text-slate-200">H</span>ouse
-      </div>
+      </Link>
 
       <div className="flex gap-8 text-slate-200">
         {auth.isAuthenticated ? (

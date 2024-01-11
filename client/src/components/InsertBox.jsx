@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
 
-const POSTS_POST_URL = "/messages/post";
+const POSTS_POST_URL = "/posts/post";
 
 const InsertBox = () => {
   const [expanded, setExpanded] = useState(false);

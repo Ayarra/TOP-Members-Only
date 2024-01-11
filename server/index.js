@@ -31,11 +31,11 @@ app.use(passport.session());
 
 //  Routes Setup
 const authRoutes = require("./auth/authRoutes");
-const messagesRoutes = require("./messages/messagesRoutes");
+const postsRoutes = require("./posts/postsRoutes");
 const isAuth = require("./auth/authMiddleware").isAuth;
 
 app.use("/auth", authRoutes);
-app.use("/messages", messagesRoutes);
+app.use("/posts", postsRoutes);
 
 app.use("/error", (req, res) => {
   res.send("Error page");
