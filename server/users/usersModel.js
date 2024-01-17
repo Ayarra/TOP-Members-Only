@@ -13,6 +13,7 @@ const UsersSchema = new Schema({
     required: true,
     mingLength: 8,
   },
+  isAdmin: Boolean,
 });
 
 UsersSchema.virtual("url").get(function () {

@@ -9,8 +9,16 @@ exports.getAllPosts = asyncHandler(async (req, res, next) => {
   res.send(allPosts);
 });
 
-exports.postPost = asyncHandler(async (req, res, next) => {
-  console.log(req.user);
+exports.getUserPosts = asyncHandler(async (req, res, next) => {
+  const allUserPosts = await Post.find({})
+    .populate("owner.username")
+    .sort({ createdAt: -1 })
+    .exec();
+
+  res.send(allUserPosts);
+});
+
+exports.createPost = asyncHandler(async (req, res, next) => {
   const newPost = new Post({
     content: req.body.content,
     owner: req.user._id,

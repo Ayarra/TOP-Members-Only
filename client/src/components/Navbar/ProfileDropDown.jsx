@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../../context/AuthProvider";
+
 const ProfileDropDown = () => {
   const [dropped, setDropped] = useState(false);
+  const { auth } = useContext(AuthContext);
 
   return (
     <div className="relative inline-block text-left">
@@ -24,7 +27,7 @@ const ProfileDropDown = () => {
       {dropped && (
         <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ease-in">
           <Link
-            to="/user1/posts"
+            to={`/users/${auth.user.username}/posts`}
             className="text-gray-700 block px-4 py-2 text-sm hover:bg-purple-800 hover:text-slate-200"
           >
             Your posts

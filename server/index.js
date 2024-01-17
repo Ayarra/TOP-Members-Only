@@ -32,16 +32,18 @@ app.use(passport.session());
 //  Routes Setup
 const authRoutes = require("./auth/authRoutes");
 const postsRoutes = require("./posts/postsRoutes");
+const usersRoutes = require("./users/usersRoutes");
+
 const isAuth = require("./auth/authMiddleware").isAuth;
 
 app.use("/auth", authRoutes);
 app.use("/posts", postsRoutes);
+app.use("/users", usersRoutes);
 
 app.use("/error", (req, res) => {
   res.send("Error page");
 });
-app.use("/", isAuth, (req, res) => {
-  console.log("im in the route");
+app.use("/", (req, res) => {
   res.send("Hello World!");
 });
 

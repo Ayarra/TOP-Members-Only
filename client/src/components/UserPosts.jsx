@@ -1,10 +1,28 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "../api/axios";
+
+const USERNAME_POSTS_URL = "/posts";
 
 const UserPosts = () => {
   const [posts, setPosts] = useState([]);
+  const { username } = useParams();
+
+  const fetchUserPosts = async () => {
+    try {
+      const response = await axios.get(`/users/${username}/posts`, {
+        params: {
+          username: username,
+        },
+      });
+      console.log("Fetching Posts: ", response);
+      setPosts(response.data);
+    } catch (err) {
+      console.log("Error fetching posts: " + err);
+    }
+  };
   useEffect(() => {
-    const response = axios.get("/:username/posts");
+    fetchUserPosts();
   }, []);
 
   return (
