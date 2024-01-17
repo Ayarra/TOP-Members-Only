@@ -4,7 +4,9 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 
 module.exports.getAllUsers = asyncHandler(async (req, res, next) => {
-  const result = await User.find({}, "username").sort({ username: -1 }).exec();
+  const result = await User.find({}, "username isAdmin")
+    .sort({ username: -1 })
+    .exec();
   res.send(result);
 });
 
@@ -25,12 +27,13 @@ module.exports.makeAdmin = asyncHandler(async (req, res, next) => {
   const userID = req.params.userID;
   const userAdminPassword = req.body.adminPassword;
 
+  console.log(userAdminPassword);
   const user = await User.findById(userID, "username").exec();
   if (userAdminPassword === adminPassword) {
     user.isAdmin = true;
     await user.save();
-  }
-  res.send(`${user.username} is an admin now.`);
+    res.send(`${user.username} is an admin now.`);
+  } else res.status(401).send("Wrong password.");
 });
 
 module.exports.updateUserPassword = asyncHandler(async (req, res, next) => {
