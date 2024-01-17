@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 
-const connection_string =
-  "mongodb+srv://insan:insan-insan@cluster0.p37x07g.mongodb.net/members_only?retryWrites=true&w=majority";
-
-const mongodb = process.env.MONGODB_URI || connection_string;
+const mongodb = process.env.MONGODB_URI;
 const mongoConnect = async () => {
   mongoose.set("strictQuery", false);
   await mongoose

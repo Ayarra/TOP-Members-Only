@@ -38,5 +38,3 @@ passport.deserializeUser(async (id, done) => {
     done(err);
   }
 });
-
-// to re-read https://medium.com/@prashantramnyc/node-js-with-passport-authentication-simplified-76ca65ee91e5

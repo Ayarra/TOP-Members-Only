@@ -3,8 +3,9 @@ const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
 const flash = require("connect-flash");
-const dbConnect = require("./config/database");
+require("dotenv").config();
 require("./config/passport");
+const dbConnect = require("./config/database");
 
 // Creating express app
 const app = express();
@@ -47,7 +48,7 @@ app.use("/", (req, res) => {
   res.send("Hello World!");
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.SERVER_PORT;
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
