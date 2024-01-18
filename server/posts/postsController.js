@@ -57,11 +57,20 @@ module.exports.deleteAllPosts = asyncHandler(async (req, res, next) => {
 module.exports.updatePost = asyncHandler(async (req, res, next) => {
   const postID = req.params.postID;
   const newContent = req.body.newContent;
+  const authUserID = req.user._id;
 
-  const updatedPost = await Post.findByIdAndUpdate(postID, {
-    content: newContent,
-  }).exec();
+  const updatedPost = await Post.findById(postID).exec();
 
-  if (!updatedPost) res.status(404).send("Post not found");
-  res.send(`Post ${postID} has been updated.`);
+  if (!updatedPost) {
+    return res.status(404).send("Post not found");
+  }
+
+  if (authUserID.equals(updatedPost.owner._id)) {
+    await Post.findByIdAndUpdate(postID, { content: newContent }).exec();
+    return res.send(`Post ${postID} has been updated.`);
+  } else {
+    return res
+      .status(401)
+      .json({ msg: "You are not authorized to update this post." });
+  }
 });
