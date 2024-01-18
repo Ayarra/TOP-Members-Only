@@ -26,6 +26,7 @@ module.exports.makeAdmin = asyncHandler(async (req, res, next) => {
   const userAdminPassword = req.body.adminPassword;
 
   const user = await User.findById(userID, "username").exec();
+  if (!user) res.status(404).send("User not found");
   if (userAdminPassword === process.env.ADMIN_PASSWORD) {
     user.isAdmin = true;
     await user.save();
