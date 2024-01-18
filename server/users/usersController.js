@@ -27,7 +27,6 @@ module.exports.makeAdmin = asyncHandler(async (req, res, next) => {
   const userID = req.params.userID;
   const userAdminPassword = req.body.adminPassword;
 
-  console.log(userAdminPassword);
   const user = await User.findById(userID, "username").exec();
   if (userAdminPassword === adminPassword) {
     user.isAdmin = true;
@@ -63,7 +62,6 @@ module.exports.updateUserPassword = asyncHandler(async (req, res, next) => {
 
 module.exports.deleteAllUsers = asyncHandler(async (req, res, next) => {
   const deletedUsers = await User.deleteMany({}).exec();
-  console.log(deletedUsers);
 
   if (deletedUsers.deletedCount === 0) {
     return res.status(404).send("No users found to delete");
