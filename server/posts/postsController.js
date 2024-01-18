@@ -26,10 +26,22 @@ exports.createPost = asyncHandler(async (req, res, next) => {
 
 exports.deletePost = asyncHandler(async (req, res, next) => {
   const postID = req.params.postID;
+  const authUserID = req.user._id;
 
-  const deletedPost = await Post.findByIdAndDelete(postID).exec();
-  if (!deletedPost) res.status(404).send("Post not found");
-  else res.send(`Post ${deletedPost._id} has been deleted.`);
+  const deletedPost = await Post.findById(postID).exec();
+
+  if (!deletedPost) {
+    return res.status(404).send("Post not found");
+  }
+
+  if (authUserID.equals(deletedPost.owner._id) || req.user.isAdmin) {
+    await Post.findByIdAndDelete(postID).exec();
+    return res.send(`Post ${deletedPost._id} has been deleted.`);
+  } else {
+    return res
+      .status(401)
+      .json({ msg: "You are not authorized to delete this post." });
+  }
 });
 
 module.exports.deleteAllPosts = asyncHandler(async (req, res, next) => {
