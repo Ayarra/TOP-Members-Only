@@ -68,7 +68,7 @@ module.exports.deleteAllUsers = asyncHandler(async (req, res, next) => {
   if (deletedUsers.deletedCount === 0) {
     return res.status(404).send("No users found to delete");
   }
-
+  await Post.deleteMany({ owner: { $exists: true } }).exec();
   res.send(`${deletedUsers.deletedCount} users have been deleted.`);
 });
 
@@ -80,6 +80,7 @@ module.exports.deleteUser = asyncHandler(async (req, res, next) => {
       .select("username")
       .exec();
     if (!deletedUser) res.status(404).send("User not found");
-    else res.send(`User ${deletedUser.username} has been deleted.`);
+    await Post.deleteMany({ owner: req.params.userID }).exec();
+    res.send(`User ${deletedUser.username} has been deleted.`);
   } else res.status(401).json({ msg: "You are not authorized." });
 });
