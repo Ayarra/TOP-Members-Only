@@ -20,12 +20,21 @@ exports.getAllPosts = asyncHandler(async (req, res, next) => {
 
 exports.createPost = asyncHandler(async (req, res, next) => {
   const content = req.body.content;
-  if (!content) res.status(406).send("The post's content can't be empty.");
+  const userID = req.user._id;
 
+  if (!content) res.status(406).send("The post's content can't be empty.");
   const newPost = new Post({
-    content: req.body.content,
-    owner: req.user._id,
+    content: content,
+    owner: userID,
   });
   await newPost.save();
   res.json({ message: "Message posted successfully" });
+});
+
+exports.deletePost = asyncHandler(async (req, res, next) => {
+  const postID = req.params.postID;
+
+  const deletedPost = await Post.findByIdAndDelete(postID).exec();
+  if (!deletedPost) res.status(404).send("Post not found");
+  else res.send(`Post ${deletedPost._id} has been deleted.`);
 });
