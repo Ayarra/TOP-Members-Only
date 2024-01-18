@@ -22,13 +22,11 @@ module.exports.getUser = asyncHandler(async (req, res, next) => {
 });
 
 module.exports.makeAdmin = asyncHandler(async (req, res, next) => {
-  const adminPassword =
-    "kjhgkljsdhdfgskl.jjklbjkhbldgflkjhgdfsklhjjklhjlhgdfsjklhgfdksljk";
   const userID = req.params.userID;
   const userAdminPassword = req.body.adminPassword;
 
   const user = await User.findById(userID, "username").exec();
-  if (userAdminPassword === adminPassword) {
+  if (userAdminPassword === process.env.ADMIN_PASSWORD) {
     user.isAdmin = true;
     await user.save();
     res.send(`${user.username} is an admin now.`);
