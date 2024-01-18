@@ -38,3 +38,13 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
   if (!deletedPost) res.status(404).send("Post not found");
   else res.send(`Post ${deletedPost._id} has been deleted.`);
 });
+
+module.exports.deleteAllPosts = asyncHandler(async (req, res, next) => {
+  const deletedPosts = await Post.deleteMany({}).exec();
+
+  if (deletedPosts.deletedCount === 0) {
+    return res.status(404).send("No posts found to delete");
+  }
+
+  res.send(`${deletedPosts.deletedCount} posts have been deleted.`);
+});
