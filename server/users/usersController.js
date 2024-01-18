@@ -37,26 +37,29 @@ module.exports.makeAdmin = asyncHandler(async (req, res, next) => {
 module.exports.updateUserPassword = asyncHandler(async (req, res, next) => {
   const newPassword = req.body.newPassword;
   const userID = req.params.userID;
+  const authUserID = req.user._id;
 
   const user = await User.findById(userID).exec();
   if (!user) res.status(404).send("User not found");
 
-  const matchingPassword = await bcrypt.compare(newPassword, user.password);
-  if (matchingPassword) {
-    return res
-      .status(400)
-      .send("New password must be different from the old password");
-  } else {
-    bcrypt.hash(newPassword, 10, async (err, hashedPassword) => {
-      if (err) console.error(err);
-      else {
-        user.password = hashedPassword;
+  if (authUserID == userID || req.user.isAdmin) {
+    const matchingPassword = await bcrypt.compare(newPassword, user.password);
+    if (matchingPassword) {
+      return res
+        .status(400)
+        .send("New password must be different from the old password");
+    } else {
+      bcrypt.hash(newPassword, 10, async (err, hashedPassword) => {
+        if (err) console.error(err);
+        else {
+          user.password = hashedPassword;
 
-        await user.save();
-        res.json("Password updated successfully");
-      }
-    });
-  }
+          await user.save();
+          res.json("Password updated successfully");
+        }
+      });
+    }
+  } else res.status(401).json({ msg: "You are not authorized." });
 });
 
 module.exports.deleteAllUsers = asyncHandler(async (req, res, next) => {
@@ -71,7 +74,7 @@ module.exports.deleteAllUsers = asyncHandler(async (req, res, next) => {
 
 module.exports.deleteUser = asyncHandler(async (req, res, next) => {
   const authUserID = req.user._id;
-  console.log(authUserID, req.params.userID);
+
   if (authUserID == req.params.userID || req.user.isAdmin) {
     const deletedUser = await User.findByIdAndDelete(req.params.userID)
       .select("username")

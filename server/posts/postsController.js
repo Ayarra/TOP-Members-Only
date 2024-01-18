@@ -2,10 +2,12 @@ const Post = require("./postsModel");
 const asyncHandler = require("express-async-handler");
 
 exports.getAllPosts = asyncHandler(async (req, res, next) => {
-  const allPosts = await Post.find()
-    .populate("owner", "username")
-    .sort({ createdAt: -1 })
-    .exec();
+  let allPosts = Post.find().sort({ createdAt: -1 });
+
+  if (req.isAuthenticated())
+    allPosts = await allPosts.populate("owner", "username").exec();
+  else allPosts = await allPosts.select("-owner").exec();
+
   res.send(allPosts);
 });
 
