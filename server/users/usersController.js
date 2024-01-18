@@ -70,9 +70,13 @@ module.exports.deleteAllUsers = asyncHandler(async (req, res, next) => {
 });
 
 module.exports.deleteUser = asyncHandler(async (req, res, next) => {
-  const deletedUser = await User.findByIdAndDelete(req.params.userID)
-    .select("username")
-    .exec();
-  if (!deletedUser) res.status(404).send("User not found");
-  else res.send(`User ${deletedUser.username} has been deleted.`);
+  const authUserID = req.user._id;
+  console.log(authUserID, req.params.userID);
+  if (authUserID == req.params.userID || req.user.isAdmin) {
+    const deletedUser = await User.findByIdAndDelete(req.params.userID)
+      .select("username")
+      .exec();
+    if (!deletedUser) res.status(404).send("User not found");
+    else res.send(`User ${deletedUser.username} has been deleted.`);
+  } else res.status(401).json({ msg: "You are not authorized." });
 });

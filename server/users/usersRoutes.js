@@ -8,5 +8,5 @@ router.get("/:userID", isAuth, usersController.getUser);
 router.put("/:userID/admin", usersController.makeAdmin);
 router.put("/:userID/password", usersController.updateUserPassword);
 router.delete("/", isAuth, isAdmin, usersController.deleteAllUsers);
-router.delete("/:userID", usersController.deleteUser);
+router.delete("/:userID", isAuth, usersController.deleteUser);
 module.exports = router;
