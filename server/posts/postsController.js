@@ -9,15 +9,6 @@ exports.getAllPosts = asyncHandler(async (req, res, next) => {
   res.send(allPosts);
 });
 
-// exports.getUserPosts = asyncHandler(async (req, res, next) => {
-//   const allUserPosts = await Post.find({})
-//     .populate("owner.username")
-//     .sort({ createdAt: -1 })
-//     .exec();
-
-//   res.send(allUserPosts);
-// });
-
 exports.createPost = asyncHandler(async (req, res, next) => {
   const content = req.body.content;
   const userID = req.user._id;
@@ -47,4 +38,16 @@ module.exports.deleteAllPosts = asyncHandler(async (req, res, next) => {
   }
 
   res.send(`${deletedPosts.deletedCount} posts have been deleted.`);
+});
+
+module.exports.updatePost = asyncHandler(async (req, res, next) => {
+  const postID = req.params.postID;
+  const newContent = req.body.newContent;
+
+  const updatedPost = await Post.findByIdAndUpdate(postID, {
+    content: newContent,
+  }).exec();
+
+  if (!updatedPost) res.status(404).send("Post not found");
+  res.send(`Post ${postID} has been updated.`);
 });
