@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Form, useActionData } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Form, redirect, useActionData } from "react-router-dom";
 import axios from "../../api/axios";
 
-export default function RegisterForm() {
+export default function RegisterForm({ setOpen }) {
   const actionData = useActionData();
   const [password, setPassword] = useState();
   const [formError, setFormError] = useState({
@@ -10,6 +10,7 @@ export default function RegisterForm() {
     password: "",
     passwordConfirmation: "",
   });
+  const [spin, setSpin] = useState(false);
 
   function handleUsernameError(value) {
     if (value.length < 5)
@@ -57,11 +58,22 @@ export default function RegisterForm() {
     else if (name === "passwordConfirmation")
       handlePasswordConfirmationError(value);
   }
+  useEffect(() => {
+    if (actionData && !actionData.msg) {
+      setSpin(true);
+
+      setTimeout(() => {
+        setOpen(0);
+      }, 1000);
+    }
+  }, [actionData, setOpen]);
 
   return (
     <>
       <Form method="post" action="/">
-        {actionData && <p className="text-center text-red-500">{actionData}</p>}
+        {actionData && actionData.msg && (
+          <p className="text-center text-red-500">{actionData.msg}</p>
+        )}
 
         {/* USERNAME */}
         <div className="mb-4">
@@ -134,13 +146,35 @@ export default function RegisterForm() {
         </div>
 
         <button
-          className={`w-full bg-purple-400 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500 disabled:cursor-not-allowed`}
+          className={`w-full flex justify-center items-center bg-purple-400 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500 disabled:cursor-not-allowed`}
           disabled={
             formError.username ||
             formError.password ||
             formError.passwordConfirmation
           }
         >
+          <svg
+            className={`${
+              spin ? "animate-spin" : "hidden"
+            } -ml-1 mr-3 h-7 w-7 text-slate-400`}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
           Register Account
         </button>
       </Form>
@@ -148,8 +182,9 @@ export default function RegisterForm() {
   );
 }
 
-export const registerAction = async ({ request }) => {
-  const data = await request.formData();
+export const registerAction = async (args) => {
+  console.log(args);
+  const data = await args.request.formData();
   const submission = {
     username: data.get("username"),
     password: data.get("password"),
@@ -158,9 +193,9 @@ export const registerAction = async ({ request }) => {
 
   try {
     await axios.post("/auth/register", submission);
+    redirect("/");
+    return { msg: false };
   } catch (err) {
-    return err.response.data;
+    return { msg: err.response.data };
   }
-
-  return null;
 };

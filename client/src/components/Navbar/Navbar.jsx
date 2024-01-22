@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthProvider";
 import LoginForm from "../Auth/LoginForm";
 import RegisterForm from "../Auth/RegisterForm";
-// import RegisterTest from "../Auth/RegisterTest";
 
 import Modal from "../Modal";
 import NavbarAuth from "./NavbarAuth";
@@ -29,8 +28,7 @@ const Navbar = () => {
       </div>
       <Modal open={open} setOpen={setOpen}>
         {open === 1 && <LoginForm />}
-        {open === 2 && <RegisterForm />}
-        {/* {open === 2 && <RegisterTest />} */}
+        {open === 2 && <RegisterForm setOpen={setOpen} />}
       </Modal>
     </div>
   );
