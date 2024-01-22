@@ -7,27 +7,20 @@ import "./index.css";
 // Components
 import App from "./App.jsx";
 import Content from "./components/Content.jsx";
-import ProfileSettings from "./components/ProfileSettings.jsx";
-import UserPosts from "./components/UserPosts.jsx";
+
+import { registerAction } from "./components/Auth/RegisterForm.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    action: registerAction,
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
+        path: "dashboard",
         element: <Content />,
-      },
-      {
-        path: "/users/:username/posts",
-        element: <UserPosts />,
-      },
-      {
-        path: "/settings",
-        element: <ProfileSettings />,
       },
     ],
   },

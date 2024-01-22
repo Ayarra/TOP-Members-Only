@@ -4,7 +4,7 @@ import AuthContext from "../context/AuthProvider";
 
 const POSTS_POST_URL = "/posts/post";
 
-const InsertBox = () => {
+const PostBox = () => {
   const [expanded, setExpanded] = useState(false);
   const [textareaContent, setTextareaContent] = useState("");
   const { auth } = useContext(AuthContext);
@@ -68,4 +68,4 @@ const InsertBox = () => {
   );
 };
 
-export default InsertBox;
+export default PostBox;

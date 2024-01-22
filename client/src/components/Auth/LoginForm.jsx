@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
 import AuthContext from "../../context/AuthProvider";
 
-// Login URL
-const LOGIN_URL = "/auth/login";
-
 const LoginForm = ({ setOpen }) => {
+  const navigate = useNavigate();
+
   const { setAuth } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     username: "",
@@ -19,10 +19,11 @@ const LoginForm = ({ setOpen }) => {
   };
 
   const handleSubmit = async (e) => {
+    console.log(formData);
     e.preventDefault();
     if (formData.username && formData.password) {
       try {
-        const response = await axios.post(LOGIN_URL, formData, {
+        const response = await axios.post("/auth/login", formData, {
           withCredentials: true,
         });
         setAuth({
@@ -30,10 +31,10 @@ const LoginForm = ({ setOpen }) => {
           user: response.data,
         });
         setOpen(0);
+        navigate("/");
       } catch (err) {
+        setFormError(err.response);
         console.log(err);
-        setFormError(err.response.data.message);
-        console.log(err.response.data.message);
       }
     }
     setFormData({

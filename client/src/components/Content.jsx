@@ -1,16 +1,14 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
-import Message from "./Message";
-
-const GET_POSTS_URL = "/posts";
+import Post from "./Post";
 
 const Content = () => {
   const [posts, setPosts] = useState([]);
   const fetchPosts = async () => {
     try {
-      const response = await axios.get(GET_POSTS_URL);
-      console.log("Fetching Posts: ", response);
+      const response = await axios.get("/posts");
+      console.log("Fetching Posts: ", response.data);
       setPosts(response.data);
     } catch (err) {
       console.log("Error fetching posts: " + err);
@@ -23,7 +21,7 @@ const Content = () => {
   return (
     <div className=" mx-32 my-20">
       {posts.map((post) => (
-        <Message
+        <Post
           key={post._id}
           content={post.content}
           owner={post.owner}
