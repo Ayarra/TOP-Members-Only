@@ -29,9 +29,10 @@ const Content = () => {
         posts.map((post) => (
           <Post
             key={post._id}
+            title={post.title}
             content={post.content}
             owner={post.owner}
-            createdAt={moment(post.createdAt).startOf("hour").fromNow()}
+            createdAt={moment(post.createdAt).fromNow()}
           />
         ))
       ) : !auth.isAuthenticated ? (
