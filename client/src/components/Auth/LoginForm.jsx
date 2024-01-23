@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
 import AuthContext from "../../context/AuthProvider";
 
@@ -12,6 +12,7 @@ const LoginForm = ({ setOpen }) => {
     password: "",
   });
   const [formError, setFormError] = useState("");
+  const [spin, setSpin] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,8 +31,11 @@ const LoginForm = ({ setOpen }) => {
           isAuthenticated: true,
           user: response.data,
         });
-        setOpen(0);
-        navigate("/");
+        setSpin(true);
+        setTimeout(() => {
+          setOpen(0);
+          navigate("/");
+        }, 1000);
       } catch (err) {
         setFormError(err.response);
         console.log(err);
@@ -94,10 +98,32 @@ const LoginForm = ({ setOpen }) => {
       </div>
 
       <button
-        className="w-full bg-purple-400 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500 disabled:cursor-not-allowed"
+        className="w-full flex justify-center items-center bg-purple-400 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500 disabled:cursor-not-allowed"
         type="submit"
         disabled={!formData.password || !formData.username}
       >
+        <svg
+          className={`${
+            spin ? "animate-spin" : "hidden"
+          } -ml-1 mr-3 h-7 w-7 text-slate-400`}
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
         Log In
       </button>
     </form>

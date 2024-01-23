@@ -1,17 +1,18 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import axios from "../../api/axios";
 import AuthContext from "../../context/AuthProvider";
 import ProfileDropDown from "./ProfileDropDown";
-
-const LOGOUT_URL = "/auth/logout";
 
 const NavbarAuth = () => {
   const { setAuth } = useContext(AuthContext);
   const logout = async () => {
     try {
-      await axios.get(LOGOUT_URL);
+      await axios.get("/auth/logout", {
+        withCredentials: true,
+      });
       setAuth({ isAuthenticated: false, user: null });
+      redirect("/");
     } catch (err) {
       console.log(err);
     }
