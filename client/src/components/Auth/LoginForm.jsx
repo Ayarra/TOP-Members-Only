@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
 import AuthContext from "../../context/AuthProvider";
 
@@ -50,7 +50,7 @@ const LoginForm = ({ setOpen }) => {
           className="text-red-500 mt-2 flex-wrap text-center
         mb-2"
         >
-          {formError}
+          {formError.data.message}
         </p>
       )}
       <div className="mb-4">
