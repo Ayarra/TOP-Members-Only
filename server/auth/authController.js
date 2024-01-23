@@ -5,6 +5,7 @@ const passport = require("passport");
 const { validationResult } = require("express-validator");
 
 exports.register = asyncHandler(async (req, res, next) => {
+  console.log("first");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const errorMessages = errors.array().map((error) => error.msg);
@@ -15,7 +16,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     username: req.body.username,
   }).exec();
   if (existingUsername) {
-    res.status(409).send({ err: "Username taken." });
+    res.status(409).send("Username taken.");
   } else {
     // Encrypting the password
     bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {

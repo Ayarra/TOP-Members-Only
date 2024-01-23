@@ -4,19 +4,29 @@ const asyncHandler = require("express-async-handler");
 exports.getAllPosts = asyncHandler(async (req, res, next) => {
   let allPosts = Post.find().sort({ createdAt: -1 });
 
-  if (req.isAuthenticated())
+  if (req.isAuthenticated()) {
+    console.log("is auth");
     allPosts = await allPosts.populate("owner", "username").exec();
-  else allPosts = await allPosts.select("-owner").exec();
+  } else {
+    console.log("not auth");
 
+    allPosts = await allPosts.select("-owner").exec();
+  }
   res.send(allPosts);
 });
 
 exports.createPost = asyncHandler(async (req, res, next) => {
+  const title = req.body.title;
   const content = req.body.content;
   const userID = req.user._id;
 
-  if (!content) res.status(406).send("The post's content can't be empty.");
+  if (!content || !title)
+    res.status(406).send("Both title and content should be filled.");
+  else if (title.length > 50)
+    res.status(422).send("Title should be less than 50 characters long.");
+
   const newPost = new Post({
+    title: title,
     content: content,
     owner: userID,
   });
