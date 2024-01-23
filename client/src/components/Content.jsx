@@ -18,7 +18,7 @@ const Content = () => {
       console.log("Error fetching posts: " + err);
     }
   };
-  console.log("content", auth);
+
   useEffect(() => {
     fetchPosts();
   }, [auth]);

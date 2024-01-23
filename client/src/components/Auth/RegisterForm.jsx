@@ -183,7 +183,6 @@ export default function RegisterForm({ setOpen }) {
 }
 
 export const registerAction = async (args) => {
-  console.log(args);
   const data = await args.request.formData();
   const submission = {
     username: data.get("username"),

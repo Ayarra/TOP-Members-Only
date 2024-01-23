@@ -12,8 +12,6 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { auth } = useContext(AuthContext);
 
-  console.log("navbar", auth);
-
   return (
     <div className="bg-purple-400 flex justify-between p-6">
       <Link to="/" className="text-4xl">

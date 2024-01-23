@@ -22,7 +22,6 @@ const PostBox = () => {
           withCredentials: true,
         }
       );
-      console.log(auth.user.userID);
     } catch (err) {
       console.log("error" + err);
     }

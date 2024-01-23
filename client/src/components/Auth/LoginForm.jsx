@@ -20,7 +20,6 @@ const LoginForm = ({ setOpen }) => {
   };
 
   const handleSubmit = async (e) => {
-    console.log(formData);
     e.preventDefault();
     if (formData.username && formData.password) {
       try {

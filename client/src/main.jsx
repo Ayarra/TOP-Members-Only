@@ -7,9 +7,10 @@ import "./index.css";
 // Components
 import App from "./App.jsx";
 import Content from "./components/Content.jsx";
+import UserPosts from "./components/UserPosts.jsx";
+import ErrorPage from "./ErrorPage.jsx";
 
 import { registerAction } from "./components/Auth/RegisterForm.jsx";
-import ErrorPage from "./ErrorPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Content />,
+      },
+      {
+        path: "/users/:userID",
+        element: <UserPosts />,
       },
     ],
   },
