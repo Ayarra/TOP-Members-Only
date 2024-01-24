@@ -2,19 +2,19 @@ import { useContext, useState } from "react";
 import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
 
-const POSTS_POST_URL = "/posts/post";
-
 const PostBox = () => {
   const [expanded, setExpanded] = useState(false);
   const [textareaContent, setTextareaContent] = useState("");
+  const [title, setTitle] = useState("");
   const { auth } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.post(
-        POSTS_POST_URL,
+        "posts/create",
         {
+          title: title,
           content: textareaContent,
           owner: auth.user.userId,
         },
@@ -22,9 +22,11 @@ const PostBox = () => {
           withCredentials: true,
         }
       );
+      window.location.reload();
     } catch (err) {
       console.log("error" + err);
     }
+    setTitle("");
     setTextareaContent("");
   };
 
@@ -47,7 +49,16 @@ const PostBox = () => {
           <p className="m-16 text-center text-2xl">Please register or login</p>
         ) : (
           <>
+            <input
+              type="text"
+              className="p-2 mb-2 w-full resize-none border rounded-md focus:outline-none focus:ring focus:border-purple-300"
+              placeholder="Title"
+              value={title}
+              required
+              onChange={(e) => setTitle(e.target.value)}
+            />
             <textarea
+              required
               className="p-2 w-full resize-none border rounded-md focus:outline-none focus:ring focus:border-purple-300"
               rows="5"
               placeholder="Type something..."
