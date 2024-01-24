@@ -4,7 +4,7 @@ import axios from "../../api/axios";
 
 export default function RegisterForm({ setOpen }) {
   const actionData = useActionData();
-  const [password, setPassword] = useState();
+  const [password, setPassword] = useState("");
   const [formError, setFormError] = useState({
     username: "",
     password: "",
@@ -64,6 +64,7 @@ export default function RegisterForm({ setOpen }) {
 
       setTimeout(() => {
         setOpen(0);
+        setSpin(false);
       }, 1000);
     }
   }, [actionData, setOpen]);
@@ -146,12 +147,13 @@ export default function RegisterForm({ setOpen }) {
         </div>
 
         <button
-          className={`w-full flex justify-center items-center bg-purple-400 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500 disabled:cursor-not-allowed`}
-          disabled={
+          className={`w-full flex justify-center items-center bg-purple-400 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500 disabled:cursor-not-allowed ${
             formError.username ||
             formError.password ||
             formError.passwordConfirmation
-          }
+              ? "disabled:opacity-50"
+              : ""
+          }`}
         >
           <svg
             className={`${

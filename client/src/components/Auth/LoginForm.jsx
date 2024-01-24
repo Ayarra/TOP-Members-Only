@@ -34,9 +34,14 @@ const LoginForm = ({ setOpen }) => {
         setTimeout(() => {
           setOpen(0);
           navigate("/");
+          setSpin(false); // Reset the spinner
         }, 1000);
       } catch (err) {
-        setFormError(err.response);
+        if (err.response && err.response.data && err.response.data.message) {
+          setFormError(err.response.data.message);
+        } else {
+          setFormError("An error occurred. Please try again.");
+        }
         console.log(err);
       }
     }
@@ -49,11 +54,8 @@ const LoginForm = ({ setOpen }) => {
   return (
     <form onSubmit={handleSubmit}>
       {formError && (
-        <p
-          className="text-red-500 mt-2 flex-wrap text-center
-        mb-2"
-        >
-          {formError.data.message}
+        <p className="text-red-500 mt-2 flex-wrap text-center mb-2">
+          {formError}
         </p>
       )}
       <div className="mb-4">
@@ -97,7 +99,9 @@ const LoginForm = ({ setOpen }) => {
       </div>
 
       <button
-        className="w-full flex justify-center items-center bg-purple-400 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500 disabled:cursor-not-allowed"
+        className={`w-full flex justify-center items-center bg-purple-400 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500 disabled:cursor-not-allowed ${
+          !formData.password || !formData.username ? "disabled:opacity-50" : ""
+        }`}
         type="submit"
         disabled={!formData.password || !formData.username}
       >

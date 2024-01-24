@@ -16,7 +16,7 @@ module.exports.getUser = asyncHandler(async (req, res, next) => {
 
   const posts = await Post.find(
     { owner: user._id },
-    "content createdAt"
+    "title content createdAt"
   ).exec();
   res.send({ user, posts });
 });
