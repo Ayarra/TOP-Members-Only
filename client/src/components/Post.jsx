@@ -12,6 +12,9 @@ const Post = ({ title, content, owner, createdAt, postID }) => {
   const [updateLoading, setUpdateLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const isAdmin = auth.isAuthenticated && auth.user.isAdmin;
+  const isUserPost = auth.isAuthenticated && owner === auth.user.userID;
+
   const handleDelete = async () => {
     try {
       setDeleteLoading(true);
@@ -22,6 +25,9 @@ const Post = ({ title, content, owner, createdAt, postID }) => {
     } catch (error) {
       console.error("Error deleting post: ", error);
       setError("Error deleting post. Please try again later.");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
     } finally {
       setDeleteLoading(false);
     }
@@ -40,9 +46,17 @@ const Post = ({ title, content, owner, createdAt, postID }) => {
     } catch (error) {
       console.error("Error updating post: ", error);
       setError("Error updating post. Please try again later.");
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
     } finally {
       setUpdateLoading(false);
     }
+  };
+
+  const handleCancelEdit = () => {
+    setUpdatedContent(content);
+    setEditMode(false);
   };
 
   if (deleted) return null;
@@ -62,23 +76,35 @@ const Post = ({ title, content, owner, createdAt, postID }) => {
           </p>
         </div>
         <div className="flex gap-4">
-          {!editMode && (
+          {!editMode && isUserPost && (
             <button
               onClick={() => setEditMode(true)}
               className="bg-purple-400 text-white p-2 focus:outline-none hover:bg-purple-600 rounded-md"
             >
-              i
+              Edit
             </button>
           )}
-          <button
-            onClick={handleDelete}
-            disabled={deleteLoading || updateLoading}
-            className={`bg-red-400 text-white p-2 focus:outline-none hover:bg-red-600 rounded-md ${
-              (deleteLoading || updateLoading) && "cursor-not-allowed"
-            }`}
-          >
-            {deleteLoading ? "Deleting..." : "x"}
-          </button>
+          {(isAdmin || isUserPost) && (
+            <>
+              {editMode && (
+                <button
+                  onClick={handleCancelEdit}
+                  className="bg-gray-400 text-white p-2 focus:outline-none hover:bg-gray-600 rounded-md"
+                >
+                  Cancel
+                </button>
+              )}
+              <button
+                onClick={handleDelete}
+                disabled={deleteLoading || updateLoading}
+                className={`bg-red-400 text-white p-2 focus:outline-none hover:bg-red-600 rounded-md ${
+                  (deleteLoading || updateLoading) && "cursor-not-allowed"
+                }`}
+              >
+                {deleteLoading ? "Deleting..." : "Delete"}
+              </button>
+            </>
+          )}
         </div>
       </div>
       {editMode ? (

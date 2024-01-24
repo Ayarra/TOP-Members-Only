@@ -12,6 +12,7 @@ const NavbarAuth = () => {
         withCredentials: true,
       });
       setAuth({ isAuthenticated: false, user: null });
+      localStorage.clear();
       redirect("/");
     } catch (err) {
       console.log(err);

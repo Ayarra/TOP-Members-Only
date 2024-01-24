@@ -26,17 +26,20 @@ const LoginForm = ({ setOpen }) => {
         const response = await axios.post("/auth/login", formData, {
           withCredentials: true,
         });
-        setAuth({
-          isAuthenticated: true,
-          user: response.data,
-        });
+        const isAuthenticated = true;
+        const user = response.data;
+
+        setAuth({ isAuthenticated, user });
+
+        localStorage.setItem("auth", JSON.stringify({ isAuthenticated, user }));
+
         setSpin(true);
         setTimeout(() => {
           setOpen(0);
           navigate("/");
-          setSpin(false); // Reset the spinner
         }, 1000);
       } catch (err) {
+        setSpin(false);
         if (err.response && err.response.data && err.response.data.message) {
           setFormError(err.response.data.message);
         } else {

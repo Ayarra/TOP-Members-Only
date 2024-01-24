@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthProvider";
 import LoginForm from "../Auth/LoginForm";
@@ -10,7 +10,21 @@ import NavbarNoAuth from "./NavbarNoAuth";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const { auth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("auth");
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setAuth(foundUser);
+    }
+    setLoading(false);
+  }, [setAuth]);
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <div className="bg-purple-400 flex justify-between p-6">

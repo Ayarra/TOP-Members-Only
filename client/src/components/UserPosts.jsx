@@ -49,7 +49,7 @@ const UserPosts = () => {
             postID={post._id}
             title={post.title}
             content={post.content}
-            owner={post.owner}
+            owner={userID}
             createdAt={post.createdAt}
           />
         ))
