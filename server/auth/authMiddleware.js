@@ -22,6 +22,7 @@ module.exports.validateRegistration = [
 ];
 
 module.exports.isAuth = (req, res, next) => {
+  console.log("aswdfs");
   if (req.isAuthenticated()) next();
   else res.status(401).json({ msg: "You are not authorized." });
 };
