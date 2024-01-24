@@ -5,7 +5,6 @@ const passport = require("passport");
 const { validationResult } = require("express-validator");
 
 exports.register = asyncHandler(async (req, res, next) => {
-  console.log("first");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const errorMessages = errors.array().map((error) => error.msg);
@@ -43,7 +42,12 @@ exports.login = (req, res, next) => {
     }
     req.login(user, (errLogin) => {
       if (errLogin) return res.status(500).send("Internal Server Error");
-      else res.send({ userID: req.user.id, username: req.user.username });
+      else
+        res.send({
+          userID: req.user.id,
+          username: req.user.username,
+          isAdmin: req.user.isAdmin,
+        });
     });
   })(req, res, next);
 };
