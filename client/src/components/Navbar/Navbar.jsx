@@ -22,16 +22,20 @@ const Navbar = () => {
     setLoading(false);
   }, [setAuth]);
 
+  const handleHomeClick = () => {
+    window.location.href = "/"; // Navigate to the home page
+  };
+
   if (loading) {
     return null;
   }
 
   return (
     <div className="bg-purple-400 flex justify-between p-6">
-      <Link to="/" className="text-4xl">
+      <button className="text-4xl" onClick={handleHomeClick}>
         <span className="text-slate-200">C</span>lub
         <span className="text-slate-200">H</span>ouse
-      </Link>
+      </button>
 
       <div className="flex gap-8 text-slate-200">
         {auth.isAuthenticated ? (
