@@ -10,12 +10,10 @@ import Content from "./components/Content.jsx";
 import UserPosts from "./components/UserPosts.jsx";
 import ErrorPage from "./ErrorPage.jsx";
 
-// import { registerAction } from "./components/Auth/RegisterForm.jsx";
-
 const router = createBrowserRouter([
   {
     path: "/",
-    // action: registerAction,
+
     element: <App />,
     errorElement: <ErrorPage />,
     children: [

@@ -1,5 +1,6 @@
 import moment from "moment";
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "../api/axios";
 import AuthContext from "../context/AuthProvider";
 
@@ -60,7 +61,7 @@ const Post = ({ title, content, owner, createdAt, postID }) => {
   };
 
   if (deleted) return null;
-
+  console.log(owner);
   return (
     <div className="border my-5 p-6 border-purple-400 rounded-lg">
       <div className="flex justify-between mb-4">
@@ -68,7 +69,15 @@ const Post = ({ title, content, owner, createdAt, postID }) => {
           <h1 className="text-2xl">
             {title}{" "}
             <span className="text-sm text-purple-500">
-              {auth.isAuthenticated ? owner?.username : "Anon User"}
+              {auth.isAuthenticated ? (
+                owner ? (
+                  <Link to={`/users/${owner._id}`}>{owner.username}</Link>
+                ) : (
+                  "Anon User"
+                )
+              ) : (
+                "Anon User"
+              )}
             </span>
           </h1>
           <p className="text-xs text-slate-500">

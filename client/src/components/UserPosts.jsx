@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../api/axios";
+import AuthContext from "../context/AuthProvider";
 import Post from "./Post";
 
 const UserPosts = () => {
   const [posts, setPosts] = useState([]);
+  const [username, setUsername] = useState("");
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { userID } = useParams();
+  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchUserPosts = async () => {
@@ -20,6 +24,7 @@ const UserPosts = () => {
         });
         console.log("Fetching Posts: ", response);
         setPosts(response.data.posts);
+        setUsername(response.data.user.username);
       } catch (err) {
         console.log("Error fetching posts: " + err);
         setError("Error fetching posts. Please try again later.");
@@ -38,10 +43,14 @@ const UserPosts = () => {
   if (error) {
     return <p className="text-center mt-64 text-2xl">{error}</p>;
   }
+  const pageTitle =
+    auth.isAuthenticated && auth.user.userID === userID
+      ? "Your Posts"
+      : `${username}'s Posts`;
 
   return (
     <div className=" mx-32 my-20">
-      <h1 className="text-3xl">Your Posts</h1>
+      <h1 className="text-3xl">{pageTitle}</h1>
       {posts.length ? (
         posts.map((post) => (
           <Post

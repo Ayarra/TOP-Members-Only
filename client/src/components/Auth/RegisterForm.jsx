@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 
-const REGITER_URL = "/auth/register";
+const REGISTER_URL = "/auth/register";
 
 const RegisterForm = ({ setOpen }) => {
   const [formData, setFormData] = useState({
@@ -14,7 +14,7 @@ const RegisterForm = ({ setOpen }) => {
     password: "",
     passwordConfirmation: "",
   });
-  const [mssgErr, setMssgErr] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,61 +22,68 @@ const RegisterForm = ({ setOpen }) => {
   };
 
   const handleError = () => {
-    // username validation
-    if (!formData.username)
+    // Username validation
+    if (!formData.username) {
       setFormError((prevData) => ({
         ...prevData,
         username: "Username required",
       }));
-    else if (formData.username.length > 15)
+    } else if (formData.username.length > 15) {
       setFormError((prevData) => ({
         ...prevData,
-        username: "Username should have a max length of 15 characters",
+        username: "Username should have a maximum length of 15 characters",
       }));
-    else setFormError((prevData) => ({ ...prevData, username: "" }));
+    } else {
+      setFormError((prevData) => ({ ...prevData, username: "" }));
+    }
 
-    // password validation
-    if (!formData.password)
+    // Password validation
+    if (!formData.password) {
       setFormError((prevData) => ({
         ...prevData,
-        password: "Passowrd required",
+        password: "Password required",
       }));
-    else if (formData.password.length < 7)
+    } else if (formData.password.length < 7) {
       setFormError((prevData) => ({
         ...prevData,
         password: "Password should have a minimum length of 7 characters",
       }));
-    else if (!/[A-Z]/.test(formData.password))
+    } else if (!/[A-Z]/.test(formData.password)) {
       setFormError((prevData) => ({
         ...prevData,
         password: "Password should contain at least one uppercase character",
       }));
-    else if (!/[0-9]/.test(formData.password))
+    } else if (!/[0-9]/.test(formData.password)) {
       setFormError((prevData) => ({
         ...prevData,
-        password: "Password should conatina at least one digit",
+        password: "Password should contain at least one digit",
       }));
-    else if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password))
+    } else if (
+      !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password)
+    ) {
       setFormError((prevData) => ({
         ...prevData,
         password: "Password should contain at least one special character",
       }));
-    else setFormError((prevData) => ({ ...prevData, password: "" }));
+    } else {
+      setFormError((prevData) => ({ ...prevData, password: "" }));
+    }
 
-    // password confirmation validation
-    if (!formData.passwordConfirmation)
+    // Password confirmation validation
+    if (!formData.passwordConfirmation) {
       setFormError((prevData) => ({
         ...prevData,
         passwordConfirmation: "Password confirmation required",
       }));
-    else if (formData.password !== formData.passwordConfirmation)
+    } else if (formData.password !== formData.passwordConfirmation) {
       setFormError((prevData) => ({
         ...prevData,
         passwordConfirmation:
-          "confirmation password should match the password provided",
+          "Confirmation password should match the provided password",
       }));
-    else
+    } else {
       setFormError((prevData) => ({ ...prevData, passwordConfirmation: "" }));
+    }
   };
 
   useEffect(() => {
@@ -91,12 +98,11 @@ const RegisterForm = ({ setOpen }) => {
       !formError.passwordConfirmation
     ) {
       try {
-        await axios.post(REGITER_URL, formData);
+        await axios.post(REGISTER_URL, formData);
         setOpen(0);
       } catch (err) {
-        console.log("error");
-        console.log(err.response.data);
-        setMssgErr(err.response.data.err);
+        console.error("Error:", err.response.data);
+        setErrorMsg(err.response.data.err);
       }
     }
     setFormData({
@@ -108,14 +114,12 @@ const RegisterForm = ({ setOpen }) => {
 
   return (
     <form onSubmit={handleSubmit} className="">
-      {mssgErr && (
-        <p
-          className="text-red-500 mt-2 flex-wrap text-center
-        mb-2"
-        >
-          {mssgErr}
+      {errorMsg && (
+        <p className="text-red-500 mt-2 flex-wrap text-center mb-2">
+          {errorMsg}
         </p>
       )}
+      {/* Username */}
       <div className="mb-4">
         <label
           className="block text-gray-700 text-sm font-bold mb-2"
@@ -142,6 +146,7 @@ const RegisterForm = ({ setOpen }) => {
           </p>
         )}
       </div>
+      {/* Password */}
       <div className="mb-4">
         <label
           className="block text-gray-700 text-sm font-bold mb-2"
@@ -166,6 +171,7 @@ const RegisterForm = ({ setOpen }) => {
           </p>
         )}
       </div>
+      {/* Password Confirmation */}
       <div className="mb-4">
         <label
           className="block text-gray-700 text-sm font-bold mb-2"
@@ -190,6 +196,7 @@ const RegisterForm = ({ setOpen }) => {
           </p>
         )}
       </div>
+      {/* Submit Button */}
       <button
         className={`w-full bg-purple-400 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-gray-500 disabled:cursor-not-allowed`}
         disabled={
