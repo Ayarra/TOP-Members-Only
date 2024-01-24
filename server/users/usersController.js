@@ -34,7 +34,6 @@ module.exports.getUser = asyncHandler(async (req, res, next) => {
 });
 
 module.exports.makeAdmin = asyncHandler(async (req, res, next) => {
-  console.log("first");
   const userID = req.params.userID;
   const userAdminPassword = req.body.adminPassword;
 

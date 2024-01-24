@@ -23,7 +23,7 @@ const Navbar = () => {
   }, [setAuth]);
 
   const handleHomeClick = () => {
-    window.location.href = "/"; // Navigate to the home page
+    window.location.href = "/";
   };
 
   if (loading) {

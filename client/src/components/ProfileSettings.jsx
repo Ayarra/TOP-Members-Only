@@ -8,7 +8,7 @@ const ProfileSettings = () => {
   const [isAdmin, setIsAdmin] = useState(auth.user.isAdmin);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  console.log(auth.user);
+
   const handleMakeAdmin = async () => {
     try {
       setLoading(true);
@@ -27,7 +27,7 @@ const ProfileSettings = () => {
           isAuthenticated: true,
           user: {
             ...auth.user,
-            isAdmin: true, // Update isAdmin if necessary
+            isAdmin: true,
           },
         })
       );

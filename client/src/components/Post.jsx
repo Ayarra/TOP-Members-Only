@@ -61,7 +61,6 @@ const Post = ({ title, content, owner, createdAt, postID }) => {
   };
 
   if (deleted) return null;
-  console.log(owner);
   return (
     <div className="border my-5 p-6 border-purple-400 rounded-lg">
       <div className="flex justify-between mb-4">

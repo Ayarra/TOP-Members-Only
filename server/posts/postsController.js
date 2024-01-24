@@ -5,11 +5,8 @@ exports.getAllPosts = asyncHandler(async (req, res, next) => {
   let allPosts = Post.find().sort({ createdAt: -1 });
 
   if (req.isAuthenticated()) {
-    console.log("is auth");
     allPosts = await allPosts.populate("owner", "username").exec();
   } else {
-    console.log("not auth");
-
     allPosts = await allPosts.select("-owner").exec();
   }
   res.send(allPosts);
