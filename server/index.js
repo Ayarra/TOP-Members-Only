@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
+
 const passport = require("passport");
 const flash = require("connect-flash");
 require("dotenv").config();
@@ -24,7 +26,14 @@ dbConnect();
 
 // Passport Setup
 app.use(
-  session({ secret: "membersOnly", resave: false, saveUninitialized: true })
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+    }),
+  })
 );
 app.use(flash());
 app.use(passport.initialize());

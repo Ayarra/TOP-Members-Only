@@ -3,6 +3,18 @@ const Post = require("../posts/postsModel");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 
+// Endpoint to check current user's session
+module.exports.checkUserAuth = (req, res) => {
+  // Check if the user is authenticated
+  if (req.isAuthenticated()) {
+    // Return user information
+    return res.json({ isAuthenticated: true, user: req.user });
+  }
+
+  // User is not authenticated
+  return res.json({ isAuthenticated: false, user: null });
+};
+
 module.exports.getAllUsers = asyncHandler(async (req, res, next) => {
   const result = await User.find({}, "username isAdmin")
     .sort({ username: -1 })

@@ -4,6 +4,8 @@ const usersController = require("./usersController");
 const { isAuth, isAdmin } = require("../auth/authMiddleware");
 
 router.get("/", isAuth, usersController.getAllUsers);
+router.get("/user", usersController.checkUserAuth);
+
 router.get("/:userID", isAuth, usersController.getUser);
 router.put("/:userID/admin", isAuth, usersController.makeAdmin);
 router.put("/:userID/password", isAuth, usersController.updateUserPassword);
