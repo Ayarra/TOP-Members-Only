@@ -4,6 +4,22 @@ const User = require("../users/usersModel");
 const passport = require("passport");
 const { validationResult } = require("express-validator");
 
+exports.checkSession = (req, res) => {
+  console.log("checking session ", req.isAuthenticated());
+  if (req.isAuthenticated()) {
+    res.send({
+      isAuthenticated: true,
+      user: {
+        userID: req.user.id,
+        username: req.user.username,
+        isAdmin: req.user.isAdmin,
+      },
+    });
+  } else {
+    res.json({ isAuthenticated: false });
+  }
+};
+
 exports.register = asyncHandler(async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

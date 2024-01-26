@@ -30,6 +30,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    cookie: { secure: false, maxAge: 1000 * 60 * 1 },
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
     }),
@@ -43,8 +44,6 @@ app.use(passport.session());
 const authRoutes = require("./auth/authRoutes");
 const postsRoutes = require("./posts/postsRoutes");
 const usersRoutes = require("./users/usersRoutes");
-
-const isAuth = require("./auth/authMiddleware").isAuth;
 
 app.use("/auth", authRoutes);
 app.use("/posts", postsRoutes);

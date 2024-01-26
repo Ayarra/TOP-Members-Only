@@ -6,6 +6,7 @@ const { body } = require("express-validator");
 
 router.post("/register", validateRegistration, authController.register);
 router.post("/login", authController.login);
+router.get("/check-session", authController.checkSession);
 router.get("/logout", authController.logout);
 
 module.exports = router;

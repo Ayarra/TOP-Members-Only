@@ -14,10 +14,8 @@ const Content = () => {
       const response = await axios.get("/posts", {
         withCredentials: true,
       });
-      console.log("Fetching Posts: ", response.data);
       setPosts(response.data);
     } catch (err) {
-      console.log("Error fetching posts: " + err);
       setError("Error fetching posts. Please try again later.");
     } finally {
       setLoading(false);
