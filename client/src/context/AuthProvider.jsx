@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import { redirect } from "react-router-dom";
 import axios from "../api/axios";
 
 const AuthContext = createContext({});
@@ -22,7 +21,9 @@ export const AuthProvider = ({ children }) => {
       } else {
         setAuth({ isAuthenticated: false, user: null });
         localStorage.clear();
-        redirect("/");
+        if (window.location.href !== window.location.origin + "/") {
+          window.location.href = "/"; // Redirect to the home page
+        }
       }
     } catch (error) {
       console.error("Error checking session:", error);
