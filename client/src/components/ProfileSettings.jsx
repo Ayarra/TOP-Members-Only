@@ -8,9 +8,11 @@ const ProfileSettings = () => {
 
   const { auth, setAuth } = useContext(AuthContext);
   const [adminPassword, setAdminPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(auth.user?.isAdmin || false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const handleMakeAdmin = async () => {
     try {
@@ -37,6 +39,7 @@ const ProfileSettings = () => {
         })
       );
       setIsAdmin(true);
+      setSuccess("You have been made an admin successfully.");
     } catch (err) {
       console.error("Error making user admin: ", err);
       setError("Error making user admin. Please try again later.");
@@ -66,6 +69,34 @@ const ProfileSettings = () => {
       setLoading(false);
     }
   };
+
+  const handleChangePassword = async () => {
+    try {
+      setLoading(true);
+
+      await axios.put(
+        `/users/${auth.user.userID}/password`,
+        {
+          newPassword: newPassword,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      setError(null);
+      setSuccess("Password updated successfully.");
+      setNewPassword("");
+    } catch (err) {
+      console.error("Error changing password: ", err);
+      setError(
+        err.message || "Error changing password. Please try again later."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="max-w-xl mx-auto mt-8 p-6 bg-purple-100 rounded-md shadow-md">
       <h1 className="text-3xl mb-6">Settings</h1>
@@ -96,6 +127,26 @@ const ProfileSettings = () => {
 
       <div className="mt-6">
         <h2 className="text-xl font-semibold mb-2 text-purple-700">
+          Change Password
+        </h2>
+        <input
+          type="password"
+          placeholder="New Password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          className="mt-2 p-2 border rounded-md w-full focus:outline-none focus:ring focus:border-purple-300"
+        />
+
+        <button
+          onClick={handleChangePassword}
+          disabled={loading}
+          className="mt-2 bg-purple-500 text-white p-2 rounded-md hover:bg-purple-600 focus:outline-none"
+        >
+          Change Password
+        </button>
+      </div>
+      <div className="mt-6">
+        <h2 className="text-xl font-semibold mb-2 text-purple-700">
           Delete Account
         </h2>
         <p className="text-red-500">
@@ -112,6 +163,7 @@ const ProfileSettings = () => {
       </div>
 
       {error && <p className="text-red-500 mt-4">{error}</p>}
+      {success && <p className="text-green-500 mt-4">{success}</p>}
     </div>
   );
 };
