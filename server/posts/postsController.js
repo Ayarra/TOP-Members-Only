@@ -2,14 +2,25 @@ const Post = require("./postsModel");
 const asyncHandler = require("express-async-handler");
 
 exports.getAllPosts = asyncHandler(async (req, res, next) => {
+  const pageSize = 10;
+  const page = parseInt(req.query.page || "0");
+  const totalPosts = await Post.countDocuments({});
   let allPosts = Post.find().sort({ createdAt: -1 });
 
   if (req.isAuthenticated()) {
-    allPosts = await allPosts.populate("owner", "username").exec();
+    allPosts = await allPosts
+      .populate("owner", "username")
+      .limit(pageSize)
+      .skip(pageSize * page)
+      .exec();
   } else {
-    allPosts = await allPosts.select("-owner").exec();
+    allPosts = await allPosts
+      .select("-owner")
+      .limit(pageSize)
+      .skip(pageSize * page)
+      .exec();
   }
-  res.send(allPosts);
+  res.send({ totalPosts, allPosts });
 });
 
 exports.createPost = asyncHandler(async (req, res, next) => {
