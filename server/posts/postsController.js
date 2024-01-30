@@ -20,7 +20,7 @@ exports.getAllPosts = asyncHandler(async (req, res, next) => {
       .skip(pageSize * page)
       .exec();
   }
-  res.send({ totalPosts, allPosts });
+  res.json({ totalPages: Math.ceil(totalPosts / pageSize), allPosts });
 });
 
 exports.createPost = asyncHandler(async (req, res, next) => {
