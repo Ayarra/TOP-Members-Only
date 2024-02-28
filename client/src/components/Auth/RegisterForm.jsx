@@ -92,6 +92,7 @@ const RegisterForm = ({ setOpen }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (
       !formError.username &&
       !formError.password &&

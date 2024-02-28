@@ -47,7 +47,7 @@ const Content = () => {
   }
 
   return (
-    <div className=" mx-32 my-20">
+    <div className=" mx-auto px-4 sm:px-6 lg:px-8 my-20">
       {posts.length ? (
         posts.map((post) => (
           <Post
@@ -68,33 +68,35 @@ const Content = () => {
         <p className="text-center mt-64 text-2xl">Be the first one to post.</p>
       )}
 
-      <nav className="flex justify-center mt-4">
-        <button
-          onClick={gotoPrevious}
-          className="px-4 py-2 rounded-md text-white bg-purple-500 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-          disabled={pageNumber === 0}
-        >
-          Previous
-        </button>
-        {pages.map((pageIndex) => (
+      {posts.length > 0 && (
+        <nav className="flex justify-center mt-4">
           <button
-            key={pageIndex}
-            className={`mx-2 px-4 py-2 rounded-md text-white bg-purple-500 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 ${
-              pageNumber === pageIndex ? "bg-purple-700" : ""
-            }`}
-            onClick={() => setPageNumber(pageIndex)}
+            onClick={gotoPrevious}
+            className="px-4 py-2 rounded-md text-white bg-purple-500 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+            disabled={pageNumber === 0}
           >
-            {pageIndex + 1}
+            Previous
           </button>
-        ))}
-        <button
-          onClick={gotoNext}
-          className="px-4 py-2 rounded-md text-white bg-purple-500 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-          disabled={pageNumber === numberOfPages - 1}
-        >
-          Next
-        </button>
-      </nav>
+          {pages.map((pageIndex) => (
+            <button
+              key={pageIndex}
+              className={`mx-2 px-4 py-2 rounded-md text-white bg-purple-500 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 ${
+                pageNumber === pageIndex ? "bg-purple-700" : ""
+              }`}
+              onClick={() => setPageNumber(pageIndex)}
+            >
+              {pageIndex + 1}
+            </button>
+          ))}
+          <button
+            onClick={gotoNext}
+            className="px-4 py-2 rounded-md text-white bg-purple-500 hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+            disabled={pageNumber === numberOfPages - 1}
+          >
+            Next
+          </button>
+        </nav>
+      )}
     </div>
   );
 };

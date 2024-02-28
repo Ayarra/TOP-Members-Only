@@ -31,7 +31,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="bg-purple-400 flex justify-between p-6">
+    <div className="bg-purple-400  flex flex-col sm:flex-row sm:justify-between items-center gap-6  p-6 min-w-fit ">
       <button className="text-4xl" onClick={handleHomeClick}>
         <span className="text-slate-200">C</span>lub
         <span className="text-slate-200">H</span>ouse

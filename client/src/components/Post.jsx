@@ -135,7 +135,9 @@ const Post = ({ title, content, owner, createdAt, postID }) => {
           </div>
         </div>
       ) : (
-        <p>{updatedContent !== content ? updatedContent : content}</p>
+        <p className="text-wrap break-words">
+          {updatedContent !== content ? updatedContent : content}
+        </p>
       )}
       {error && <p className="text-red-500">{error}</p>}
     </div>

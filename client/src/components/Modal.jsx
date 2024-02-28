@@ -8,9 +8,9 @@ const Modal = ({ open, setOpen, children }) => {
       onClick={() => setOpen(0)}
     >
       <div
-        className={`bg-white rounded-lg shadow p-6
-        transition-all w-1/3
-        ${open ? "scale-100 opacity-100" : "scale-110 opacitiy-0"}`}
+        className={`bg-white rounded-lg shadow p-6 transition-all w-full sm:w-1/2 lg:w-1/3  ${
+          open ? "scale-100 opacity-100" : "scale-110 opacity-0"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         <button

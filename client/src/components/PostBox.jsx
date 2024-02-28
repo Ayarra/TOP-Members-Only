@@ -46,7 +46,9 @@ const PostBox = () => {
         }`}
       >
         {!auth.isAuthenticated ? (
-          <p className="m-16 text-center text-2xl">Please register or login</p>
+          <div>
+            <p className=" text-center text-2xl">Please register or login</p>
+          </div>
         ) : (
           <>
             <input
