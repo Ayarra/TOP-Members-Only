@@ -13,13 +13,13 @@ const dbConnect = require("./config/database");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-    exposedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+const corsOptions = {
+  origin: "http://127.0.0.1:5173", // Specify the allowed origin here
+  credentials: true, // Enable credentials
+};
+
+app.use(cors(corsOptions));
+// app.use(cors());
 
 // Connection to the DB
 dbConnect();
