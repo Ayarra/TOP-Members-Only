@@ -21,11 +21,11 @@ exports.checkSession = (req, res) => {
 
 exports.register = asyncHandler(async (req, res, next) => {
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     const errorMessages = errors.array().map((error) => error.msg);
     return res.status(400).json({ errors: errorMessages });
   }
-
   const existingUsername = await User.findOne({
     username: req.body.username,
   }).exec();
@@ -33,17 +33,19 @@ exports.register = asyncHandler(async (req, res, next) => {
     res.status(409).send("Username taken.");
   } else {
     // Encrypting the password
-    bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-      if (err) console.error(err);
-      else {
-        const user = new User({
-          username: req.body.username,
-          password: hashedPassword,
-        });
-        await user.save();
-        res.send("User successfuly registred!");
-      }
-    });
+    try {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      const user = new User({
+        username: req.body.username,
+        password: hashedPassword,
+      });
+      await user.save();
+      res.send("User successfully registered!");
+    } catch (error) {
+      console.error(error);
+      // Handle the error and send an appropriate response
+      res.status(500).send("Internal Server Error");
+    }
   }
 });
 

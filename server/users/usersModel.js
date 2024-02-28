@@ -6,12 +6,13 @@ const UsersSchema = new Schema({
   username: {
     type: String,
     required: true,
-    maxLength: 100,
+    maxLength: 20,
   },
   password: {
     type: String,
     required: true,
     mingLength: 8,
+    maxLength: 50,
   },
   isAdmin: { type: Boolean, default: false },
 });
